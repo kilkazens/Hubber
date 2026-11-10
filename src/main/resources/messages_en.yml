@@ -1,0 +1,63 @@
+# ======================================================== #
+#                Hubber - English Localization             #
+#                 Developed by kilkazens                   #
+#         Initially created for Initium Magnum Terra       #
+# ======================================================== #
+
+prefix: "&#FF8C00&lHubber &#888888» "
+no_permission: "&cYou do not have permission to execute this command!"
+only_players: "&cThis command can only be executed by a player!"
+spawn_not_set: "&cThe hub spawn location is not set yet! An administrator must run &e/hubspawn"
+spawn_set: "&aHub spawn location has been successfully set to your coordinates!"
+teleported_to_spawn: "&aYou have been teleported to the hub spawn!"
+connecting_to_server: "&aConnecting to &#FFD700{server}&a..."
+reload_success: "&aConfiguration and language files reloaded successfully!"
+book_given: "&aYou received the server connection book!"
+
+protection:
+  block_break_denied: "&cBreaking blocks is not allowed in the hub!"
+  block_place_denied: "&cPlacing blocks is not allowed in the hub!"
+
+book:
+  name: "&#FFD700&lConnect to Server &#AAAAAA(Right-Click)"
+  lore:
+    - "&#AAAAAARight-click to instantly"
+    - "&#AAAAAAconnect to the main server!"
+
+triggers:
+  created: "&aTrigger &#FFD700{name} &asuccessfully created! (Radius: &#FFD700{radius}m&a)"
+  cuboid_created: "&aZone trigger &#FFD700{name} &asuccessfully created between pos1 and pos2!"
+  pos1_set: "&aPoint 1 (pos1) set to: &#FFD700{x}, {y}, {z}"
+  pos2_set: "&aPoint 2 (pos2) set to: &#FFD700{x}, {y}, {z}"
+  need_positions: "&cYou must set both &e/settrigger pos1 &cand &e/settrigger pos2 &cfirst!"
+  diff_worlds: "&cPoints pos1 and pos2 must be in the same world!"
+  deleted: "&aTrigger &#FFD700{name} &asuccessfully deleted!"
+  not_found: "&cTrigger &#FFD700{name} &cwas not found!"
+  list_empty: "&eThe trigger list is currently empty."
+  list_header: "&#FF8C00&lHubber &#888888» &eActive triggers (&#FFD700{count}&e):"
+  teleported: "&#00FF7F&lTrigger! &#AAAAAAYou have been teleported to the hub spawn."
+
+verification:
+  hover_text: "&#00FF7F&lClick to open the Discord server in your browser"
+  message:
+    - "&8&m----------------------------------------"
+    - "&#5865F2&l          DISCORD VERIFICATION"
+    - ""
+    - "&fTo verify and link your account,"
+    - "&fplease follow our Discord invite link below:"
+    - "&#5865F2&n{link}"
+    - ""
+    - "&7(Click the link above to open in your browser)"
+    - "&8&m----------------------------------------"
+
+commands:
+  help_header: "&#FF8C00&lHubber &#888888» &eAvailable Commands:"
+  help_reload: "§8» §e/hubber reload §7— reload configuration and language files"
+  help_setspawn: "§8» §e/hubber setspawn §7— set hub spawn location"
+  help_book: "§8» §e/hubber book §7— give yourself the connection book"
+  help_joinserver: "§8» §e/joinserver §7— connect to the target game server"
+  help_hubspawn: "§8» §e/hubspawn §7— set hub spawn location"
+  help_back: "§8» §e/back §7— teleport to hub spawn"
+  help_verification: "§8» §e/verification §7— send discord verification link"
+  help_settrigger: "§8» §e/settrigger §7— create spawn teleport trigger"
+  unknown_subcommand: "§cUnknown subcommand! Use /"

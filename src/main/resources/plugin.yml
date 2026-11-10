@@ -1,0 +1,70 @@
+name: Hubber
+version: '${project.version}'
+main: ru.hubber.HubberPlugin
+api-version: '26.3'
+author: kilkazens
+description: Full-featured lobby and hub management plugin for Paper 26.3. Initially created for Initium Magnum Terra.
+
+commands:
+  joinserver:
+    description: Connect to the target server via Velocity / BungeeCord proxy
+    permission: hubber.joinserver
+    permission-message: "§cYou do not have permission to execute this command!"
+    aliases: [play, connect]
+    usage: "/joinserver [server]"
+  hubspawn:
+    description: Set the hub spawn location
+    permission: hubber.hubspawn
+    permission-message: "§cYou do not have permission to execute this command!"
+    usage: "/hubspawn"
+  back:
+    description: Teleport to the hub spawn location
+    permission: hubber.back
+    aliases: [hub, spawn, lobby]
+    usage: "/back"
+  verification:
+    description: Send the Discord verification link
+    permission: hubber.verification
+    aliases: [discord, ds, verify]
+    usage: "/verification"
+  settrigger:
+    description: Create a trigger that teleports players to hub spawn
+    permission: hubber.settrigger
+    permission-message: "§cYou do not have permission to execute this command!"
+    aliases: [trigger, hubtrigger]
+    usage: "/settrigger [radius|pos1|pos2|create|list|remove]"
+  hubber:
+    description: Main management command for Hubber
+    permission: hubber.admin
+    permission-message: "§cYou do not have permission to execute this command!"
+    aliases: [hb]
+    usage: "/hubber [reload|setspawn|book]"
+
+permissions:
+  hubber.joinserver:
+    description: Allows using /joinserver to connect to the target proxy server
+    default: true
+  hubber.hubspawn:
+    description: Allows setting the hub spawn location
+    default: op
+  hubber.back:
+    description: Allows using /back to teleport to the hub spawn
+    default: true
+  hubber.verification:
+    description: Allows viewing the Discord verification link
+    default: true
+  hubber.settrigger:
+    description: Allows creating and managing hub spawn triggers
+    default: op
+  hubber.admin:
+    description: Allows administrative actions such as reloading the plugin
+    default: op
+  hubber.bypass.break:
+    description: Allows breaking blocks in the hub
+    default: op
+  hubber.bypass.place:
+    description: Allows placing blocks in the hub
+    default: op
+  hubber.bypass.gamemode:
+    description: Allows changing gamemode in the hub
+    default: op

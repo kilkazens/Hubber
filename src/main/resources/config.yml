@@ -1,0 +1,107 @@
+# ======================================================== #
+#                   Hubber Configuration                   #
+#                   Developed by kilkazens                 #
+#         Initially created for Initium Magnum Terra       #
+# ======================================================== #
+
+# Primary plugin language: "en" (English, default) or "ru" (Russian)
+# Language files are located in: plugins/Hubber/messages_<lang>.yml
+language: "en"
+
+# Velocity / BungeeCord proxy connection settings (/joinserver)
+joinserver:
+  # Target server name configured in your Velocity / BungeeCord proxy
+  target_server: "main"
+
+# Hub spawn point settings (configured via /hubspawn)
+spawn:
+  set: false
+  world: "world"
+  x: 0.5
+  y: 100.0
+  z: 0.5
+  yaw: 0.0
+  pitch: 0.0
+  # Always teleport players to hub spawn upon joining (regardless of where they logged off)
+  always_spawn_on_join: true
+  # Respawn players at hub spawn upon death
+  respawn_at_hubspawn: true
+
+# Force Gamemode settings
+gamemode:
+  # Force all players into Survival mode
+  force_survival: true
+  # Allow server operators (OPs) to bypass forced survival mode
+  allow_ops_bypass: true
+  # Permission to bypass forced gamemode
+  bypass_permission: "hubber.bypass.gamemode"
+
+# Server connection book item settings
+book:
+  enabled: true
+  # Hotbar slot given upon join (0 to 8)
+  slot: 0
+  # Give book to players upon joining the server
+  give_on_join: true
+  # Prevent players from dropping the book (pressing 'Q')
+  prevent_drop: true
+  # Prevent players from moving the book in inventory
+  prevent_move: false
+  # Command executed from the player's perspective upon Right-Click
+  command: "joinserver"
+  # Click cooldown in milliseconds (prevents spamming)
+  cooldown_ms: 1000
+  # Book item material (BOOK, WRITTEN_BOOK, ENCHANTED_BOOK)
+  material: "BOOK"
+
+# Hub protection settings
+protection:
+  # Block breaking prevention
+  block_break:
+    deny: true
+    allow_ops: true
+    bypass_permission: "hubber.bypass.break"
+    notify: true
+
+  # Block placing prevention
+  block_place:
+    deny: true
+    allow_ops: true
+    bypass_permission: "hubber.bypass.place"
+    notify: true
+
+  # Disable any damage to players (fall, fire, drowning, etc.)
+  disable_damage: true
+
+  # Disable PvP (player-vs-player combat and projectiles)
+  disable_pvp: true
+
+  # Disable player collisions (prevents pushing/bumping players)
+  disable_collisions: true
+
+  # Disable hunger loss (food level remains full)
+  disable_hunger: true
+
+  # Prevent dropping any items
+  prevent_item_drop: true
+
+  # Prevent picking up items
+  prevent_item_pickup: true
+
+  # Teleport player to hub spawn if they fall into the void
+  void_teleport:
+    enabled: true
+    trigger_y: -64.0
+
+# Spawn trigger settings (/settrigger)
+triggers:
+  # Play teleport sound upon entering a trigger
+  play_sound: true
+  sound: "entity.enderman.teleport"
+  # Default radius when running /settrigger without arguments (in blocks)
+  default_radius: 2.0
+
+# Discord verification command settings (/verification)
+verification:
+  # Your Discord server invite URL
+  link: "https://discord.gg/yourserver"
