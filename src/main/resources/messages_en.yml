@@ -37,6 +37,17 @@ triggers:
   list_header: "&#FF8C00&lHubber &#888888» &eActive triggers (&#FFD700{count}&e):"
   teleported: "&#00FF7F&lTrigger! &#AAAAAAYou have been teleported to the hub spawn."
 
+npc:
+  created: "&aNPC &#FFD700{name} &asuccessfully created! Right-click command: &e/{command}"
+  deleted: "&aNPC &#FFD700{id} &asuccessfully removed!"
+  nearest_deleted: "&aNearest NPC &#FFD700{id} &a({name}&a) successfully removed!"
+  not_found: "&cNPC &#FFD700{id} &cwas not found!"
+  no_nearby: "&cNo NPCs found nearby to remove!"
+  list_empty: "&eNo NPCs currently exist."
+  list_header: "&#FF8C00&lHubber &#888888» &eActive NPCs (&#FFD700{count}&e):"
+  usage: "&eUsage: &f/hub <command> <skin_url|player> <name> <color> [bold] [italic]\n&7Example: &f/hub joinserver default Server gold true false\n&7(Or use &e/hub remove [id]&7, &e/hub list&7)"
+  skin_error: "&cWarning: Failed to load skin. Make sure the URL is from textures.minecraft.net or a valid player name."
+
 verification:
   hover_text: "&#00FF7F&lClick to open the Discord server in your browser"
   message:

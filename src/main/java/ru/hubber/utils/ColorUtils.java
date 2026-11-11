@@ -61,6 +61,57 @@ public final class ColorUtils {
     }
 
     /**
+     * Parses a color string (named, hex, or color code) into an Adventure TextColor.
+     */
+    public static net.kyori.adventure.text.format.TextColor parseTextColor(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return net.kyori.adventure.text.format.NamedTextColor.WHITE;
+        }
+
+        String clean = input.trim().toLowerCase();
+        net.kyori.adventure.text.format.NamedTextColor named =
+                net.kyori.adventure.text.format.NamedTextColor.NAMES.value(clean.replace('-', '_'));
+        if (named != null) {
+            return named;
+        }
+
+        if (clean.startsWith("&") && clean.length() == 2) {
+            char code = clean.charAt(1);
+            return switch (code) {
+                case '0' -> net.kyori.adventure.text.format.NamedTextColor.BLACK;
+                case '1' -> net.kyori.adventure.text.format.NamedTextColor.DARK_BLUE;
+                case '2' -> net.kyori.adventure.text.format.NamedTextColor.DARK_GREEN;
+                case '3' -> net.kyori.adventure.text.format.NamedTextColor.DARK_AQUA;
+                case '4' -> net.kyori.adventure.text.format.NamedTextColor.DARK_RED;
+                case '5' -> net.kyori.adventure.text.format.NamedTextColor.DARK_PURPLE;
+                case '6' -> net.kyori.adventure.text.format.NamedTextColor.GOLD;
+                case '7' -> net.kyori.adventure.text.format.NamedTextColor.GRAY;
+                case '8' -> net.kyori.adventure.text.format.NamedTextColor.DARK_GRAY;
+                case '9' -> net.kyori.adventure.text.format.NamedTextColor.BLUE;
+                case 'a' -> net.kyori.adventure.text.format.NamedTextColor.GREEN;
+                case 'b' -> net.kyori.adventure.text.format.NamedTextColor.AQUA;
+                case 'c' -> net.kyori.adventure.text.format.NamedTextColor.RED;
+                case 'd' -> net.kyori.adventure.text.format.NamedTextColor.LIGHT_PURPLE;
+                case 'e' -> net.kyori.adventure.text.format.NamedTextColor.YELLOW;
+                default -> net.kyori.adventure.text.format.NamedTextColor.WHITE;
+            };
+        }
+
+        if (clean.startsWith("&#")) {
+            clean = clean.substring(1);
+        } else if (clean.startsWith("<#") && clean.endsWith(">")) {
+            clean = clean.substring(1, clean.length() - 1);
+        }
+
+        if (!clean.startsWith("#") && (clean.length() == 6 || clean.length() == 8)) {
+            clean = "#" + clean;
+        }
+
+        net.kyori.adventure.text.format.TextColor hex = net.kyori.adventure.text.format.TextColor.fromHexString(clean);
+        return hex != null ? hex : net.kyori.adventure.text.format.NamedTextColor.WHITE;
+    }
+
+    /**
      * Translates a list of strings with color codes into legacy strings.
      */
     public static List<String> colorize(List<String> list) {

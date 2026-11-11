@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.hubber.book.BookManager;
 import ru.hubber.collision.CollisionManager;
 import ru.hubber.commands.BackCommand;
+import ru.hubber.commands.HubCommand;
 import ru.hubber.commands.HubSpawnCommand;
 import ru.hubber.commands.HubberCommand;
 import ru.hubber.commands.JoinServerCommand;
@@ -13,9 +14,11 @@ import ru.hubber.commands.SetTriggerCommand;
 import ru.hubber.commands.VerificationCommand;
 import ru.hubber.config.ConfigManager;
 import ru.hubber.listeners.BookListener;
+import ru.hubber.listeners.NpcListener;
 import ru.hubber.listeners.PlayerJoinListener;
 import ru.hubber.listeners.ProtectionListener;
 import ru.hubber.listeners.TriggerListener;
+import ru.hubber.npc.NpcManager;
 import ru.hubber.spawn.SpawnManager;
 import ru.hubber.trigger.TriggerManager;
 
@@ -26,6 +29,7 @@ public class HubberPlugin extends JavaPlugin {
     private CollisionManager collisionManager;
     private BookManager bookManager;
     private TriggerManager triggerManager;
+    private NpcManager npcManager;
 
     @Override
     public void onEnable() {
@@ -37,6 +41,7 @@ public class HubberPlugin extends JavaPlugin {
         this.collisionManager = new CollisionManager(this, configManager);
         this.bookManager = new BookManager(this, configManager);
         this.triggerManager = new TriggerManager(this);
+        this.npcManager = new NpcManager(this);
 
         // 3. Register commands
         registerCommands();
@@ -50,7 +55,7 @@ public class HubberPlugin extends JavaPlugin {
         getLogger().info("=========================================");
         getLogger().info(" Hubber v" + getPluginMeta().getVersion() + " successfully enabled on Paper 26.3!");
         getLogger().info(" Developed by kilkazens for Initium Magnum Terra.");
-        getLogger().info(" Protection, spawn, triggers, book, and gamemode active.");
+        getLogger().info(" Protection, spawn, triggers, NPCs, book, and gamemode active.");
         getLogger().info("=========================================");
     }
 
@@ -66,6 +71,13 @@ public class HubberPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
+        PluginCommand hubCmd = getCommand("hub");
+        if (hubCmd != null) {
+            HubCommand hubHandler = new HubCommand(configManager, spawnManager, npcManager);
+            hubCmd.setExecutor(hubHandler);
+            hubCmd.setTabCompleter(hubHandler);
+        }
+
         PluginCommand joinserverCmd = getCommand("joinserver");
         if (joinserverCmd != null) {
             joinserverCmd.setExecutor(new JoinServerCommand(this, configManager));
@@ -95,7 +107,7 @@ public class HubberPlugin extends JavaPlugin {
 
         PluginCommand hubberCmd = getCommand("hubber");
         if (hubberCmd != null) {
-            HubberCommand handler = new HubberCommand(this, configManager, spawnManager, collisionManager, bookManager, triggerManager);
+            HubberCommand handler = new HubberCommand(this, configManager, spawnManager, collisionManager, bookManager, triggerManager, npcManager);
             hubberCmd.setExecutor(handler);
             hubberCmd.setTabCompleter(handler);
         }
@@ -107,6 +119,7 @@ public class HubberPlugin extends JavaPlugin {
         pm.registerEvents(new ProtectionListener(configManager, spawnManager), this);
         pm.registerEvents(new BookListener(configManager, bookManager), this);
         pm.registerEvents(new TriggerListener(configManager, spawnManager, triggerManager), this);
+        pm.registerEvents(new NpcListener(npcManager), this);
     }
 
     public ConfigManager getConfigManager() {
@@ -127,5 +140,9 @@ public class HubberPlugin extends JavaPlugin {
 
     public TriggerManager getTriggerManager() {
         return triggerManager;
+    }
+
+    public NpcManager getNpcManager() {
+        return npcManager;
     }
 }

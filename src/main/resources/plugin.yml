@@ -6,6 +6,10 @@ author: kilkazens
 description: Full-featured lobby and hub management plugin for Paper 26.3. Initially created for Initium Magnum Terra.
 
 commands:
+  hub:
+    description: Teleport to hub spawn or create/manage NPCs
+    usage: "/hub [command] [skin_url] [name] [color] [bold] [italic]"
+    aliases: [hubnpc]
   joinserver:
     description: Connect to the target server via Velocity / BungeeCord proxy
     permission: hubber.joinserver
@@ -20,7 +24,7 @@ commands:
   back:
     description: Teleport to the hub spawn location
     permission: hubber.back
-    aliases: [hub, spawn, lobby]
+    aliases: [spawn, lobby]
     usage: "/back"
   verification:
     description: Send the Discord verification link

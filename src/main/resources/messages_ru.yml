@@ -37,6 +37,17 @@ triggers:
   list_header: "&#FF8C00&lHubber &#888888» &eСписок активных триггеров (&#FFD700{count}&e):"
   teleported: "&#00FF7F&lТриггер! &#AAAAAAВы перемещены на спавн хаба."
 
+npc:
+  created: "&aNPC &#FFD700{name} &aуспешно создан! Команда при ПКМ: &e/{command}"
+  deleted: "&aNPC &#FFD700{id} &aуспешно удален!"
+  nearest_deleted: "&aБлижайший NPC &#FFD700{id} &a({name}&a) успешно удален!"
+  not_found: "&cNPC с ID &#FFD700{id} &cне найден!"
+  no_nearby: "&cПоблизости не найдено NPC для удаления!"
+  list_empty: "&eСписок NPC пуст."
+  list_header: "&#FF8C00&lHubber &#888888» &eСписок активных NPC (&#FFD700{count}&e):"
+  usage: "&eИспользование: &f/hub <команда> <ссылка_на_скин|игрок> <Имя> <Цвет> [bold] [italic]\n&7Пример: &f/hub joinserver default Сервер gold true false\n&7(Для удаления: &e/hub remove [id]&7, для списка: &e/hub list&7)"
+  skin_error: "&cПредупреждение: Не удалось загрузить скин. Убедитесь, что ссылка ведет на textures.minecraft.net или укажите ник игрока."
+
 verification:
   hover_text: "&#00FF7F&lНажмите, чтобы открыть Discord в браузере"
   message:

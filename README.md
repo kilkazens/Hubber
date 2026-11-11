@@ -48,9 +48,17 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
   * **Hunger Lock**: Players never lose food or saturation.
   * **Void Fall Rescue**: Players falling below $Y = -64$ (configurable) are instantly and safely teleported back to the hub spawn.
 
+* 🧍 **Native Paper NPCs (`/hub <command> <skin> <name> <color> [bold] [italic]`)**:
+  * Create interactive player-model NPCs directly at your location using Paper's native `Mannequin` API.
+  * Right-clicking the NPC executes the specified command (e.g. `joinserver`, `verification`, or any custom command) from the player's perspective.
+  * Custom skin support: directly from `textures.minecraft.net`, 64-char texture hashes, or player usernames.
+  * Customizable nametag colors (`gold`, `red`, `aqua`, `#FFD700`, etc.) with optional bold and italic styling.
+  * Safe and persistent: NPCs are invulnerable, immovable, silent, and saved across restarts in `npcs.yml`.
+  * Management: `/hub list` to inspect active NPCs, `/hub remove [id]` to delete by ID or remove the nearest one.
+
 * 📍 **Persistent Spawn & Hub Commands**:
   * `/hubspawn`: Easily set the hub spawn point to your current position.
-  * `/back` (aliases: `/hub`, `/spawn`, `/lobby`): Teleport back to the hub spawn point.
+  * `/hub` (without arguments) / `/back`: Teleport to the hub spawn point.
   * **Forced Spawn on Join**: Players are always spawned at the hub spawn point upon connecting, regardless of where they were when they logged off.
   * Respawn redirection to hub spawn.
 
@@ -74,9 +82,10 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
 
 | Command | Description | Aliases | Permission | Default |
 |---|---|---|---|---|
+| `/hub` | Teleport to hub (no args) or create/manage NPCs | `/hubnpc` | Everyone (teleport) / `hubber.admin` (NPC) | Default / OP |
 | `/joinserver` | Connect to the target proxy server | `/play`, `/connect` | `hubber.joinserver` | Everyone (`true`) |
 | `/hubspawn` | Set the hub spawn location | — | `hubber.hubspawn` | OP |
-| `/back` | Teleport to the hub spawn | `/hub`, `/spawn`, `/lobby` | `hubber.back` | Everyone (`true`) |
+| `/back` | Teleport to the hub spawn | `/spawn`, `/lobby` | `hubber.back` | Everyone (`true`) |
 | `/verification` | Send Discord verification link | `/discord`, `/ds`, `/verify` | `hubber.verification` | Everyone (`true`) |
 | `/settrigger` | Create a spawn teleport trigger | `/trigger`, `/hubtrigger` | `hubber.settrigger` | OP |
 | `/hubber reload` | Reload configuration and languages | `/hb` | `hubber.admin` | OP |
@@ -129,6 +138,7 @@ target/Hubber-1.0.0.jar
 
 ### Основные возможности:
 * **Книга подключения к серверу**: Выдается при входе, при клике ПКМ выполняет `/joinserver` от лица игрока. Защищена от выбрасывания, перемещения и спама.
+* **Нативные NPC (`/hub <команда> <скин> <имя> <цвет> [bold] [italic]`)**: Создание интерактивных NPC прямо на позиции игрока. При ПКМ на NPC выполняется указанная команда от лица игрока. Поддержка скинов по ссылке, хешу или нику, цветные имена с bold/italic. Автосохранение в `npcs.yml`.
 * **Защита хаба**: Полный запрет ломания/установки блоков (кроме OP), отсутствие любого урона, отключение PvP, отключение толкания игроков (`COLLISION_RULE NEVER`), бесконечная сытость, защита от падения в бездну.
 * **Система спавна**: `/hubspawn` для установки точки, `/back` для телепортации, принудительный спавн при входе независимо от места выхода.
 * **Триггеры спавна (`/settrigger`)**: Создание точек или 3D-боксов, при входе в которые игрок телепортируется на спавн.

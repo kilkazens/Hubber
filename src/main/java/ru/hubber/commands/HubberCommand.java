@@ -25,16 +25,19 @@ public class HubberCommand implements CommandExecutor, TabCompleter {
     private final CollisionManager collisionManager;
     private final BookManager bookManager;
     private final ru.hubber.trigger.TriggerManager triggerManager;
+    private final ru.hubber.npc.NpcManager npcManager;
 
     public HubberCommand(HubberPlugin plugin, ConfigManager config, SpawnManager spawnManager,
                          CollisionManager collisionManager, BookManager bookManager,
-                         ru.hubber.trigger.TriggerManager triggerManager) {
+                         ru.hubber.trigger.TriggerManager triggerManager,
+                         ru.hubber.npc.NpcManager npcManager) {
         this.plugin = plugin;
         this.config = config;
         this.spawnManager = spawnManager;
         this.collisionManager = collisionManager;
         this.bookManager = bookManager;
         this.triggerManager = triggerManager;
+        this.npcManager = npcManager;
     }
 
     @Override
@@ -64,6 +67,7 @@ public class HubberCommand implements CommandExecutor, TabCompleter {
                 config.reload();
                 spawnManager.loadSpawn();
                 triggerManager.loadTriggers();
+                npcManager.loadNpcs();
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
                     collisionManager.applyCollisionRule(player);
                 }
