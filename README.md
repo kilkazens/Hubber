@@ -51,7 +51,7 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
 * 🧍 **Native Paper NPCs (`/hub <command> <skin> <name> <color> [bold] [italic]`)**:
   * Create interactive player-model NPCs directly at your location using Paper's native `Mannequin` API.
   * Right-clicking the NPC executes the specified command (e.g. `joinserver`, `verification`, or any custom command) from the player's perspective.
-  * Custom skin support: directly from `textures.minecraft.net`, 64-char texture hashes, or player usernames.
+  * **Advanced Skin Support**: Automatic **SkinsRestorer** integration (supports skins by name or player from SkinsRestorer), direct `textures.minecraft.net` URLs, 64-character texture hashes, and fallback Mojang API lookup with signed textures.
   * Customizable nametag colors (`gold`, `red`, `aqua`, `#FFD700`, etc.) with optional bold and italic styling.
   * Safe and persistent: NPCs are invulnerable, immovable, silent, and saved across restarts in `npcs.yml`.
   * Management: `/hub list` to inspect active NPCs, `/hub remove [id]` to delete by ID or remove the nearest one.
@@ -138,7 +138,7 @@ target/Hubber-1.1.jar
 
 ### Основные возможности:
 * **Книга подключения к серверу**: Выдается при входе, при клике ПКМ выполняет `/joinserver` от лица игрока. Защищена от выбрасывания, перемещения и спама.
-* **Нативные NPC (`/hub <команда> <скин> <имя> <цвет> [bold] [italic]`)**: Создание интерактивных NPC прямо на позиции игрока. При ПКМ на NPC выполняется указанная команда от лица игрока. Поддержка скинов по ссылке, хешу или нику, цветные имена с bold/italic. Автосохранение в `npcs.yml`.
+* **Нативные NPC (`/hub <команда> <скин> <имя> <цвет> [bold] [italic]`)**: Создание интерактивных NPC прямо на позиции игрока. При ПКМ на NPC выполняется указанная команда от лица игрока. Поддержка скинов: автоматическая интеграция со **SkinsRestorer** (поддерживает скины по имени скина или нику из SkinsRestorer), прямые ссылки на текстуры, хеши или ники Mojang. Цветные имена с bold/italic. Автосохранение в `npcs.yml`.
 * **Защита хаба**: Полный запрет ломания/установки блоков (кроме OP), отсутствие любого урона, отключение PvP, отключение толкания игроков (`COLLISION_RULE NEVER`), бесконечная сытость, защита от падения в бездну.
 * **Система спавна**: `/hubspawn` для установки точки, `/back` для телепортации, принудительный спавн при входе независимо от места выхода.
 * **Триггеры спавна (`/settrigger`)**: Создание точек или 3D-боксов, при входе в которые игрок телепортируется на спавн.

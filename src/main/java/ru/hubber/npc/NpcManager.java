@@ -1,8 +1,6 @@
 package ru.hubber.npc;
 
 import com.destroystokyo.paper.SkinParts;
-import com.destroystokyo.paper.profile.PlayerProfile;
-import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -18,14 +16,12 @@ import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.profile.PlayerTextures;
 import ru.hubber.HubberPlugin;
+import ru.hubber.skin.SkinManager;
 import ru.hubber.utils.ColorUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -34,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NpcManager {
 
     private final HubberPlugin plugin;
+    private final SkinManager skinManager;
     private final NamespacedKey keyNpcCmd;
     private final NamespacedKey keyNpcId;
     private final File npcsFile;
@@ -41,6 +38,7 @@ public class NpcManager {
 
     public NpcManager(HubberPlugin plugin) {
         this.plugin = plugin;
+        this.skinManager = new SkinManager(plugin);
         this.keyNpcCmd = new NamespacedKey(plugin, "npc_cmd");
         this.keyNpcId = new NamespacedKey(plugin, "npc_id");
         this.npcsFile = new File(plugin.getDataFolder(), "npcs.yml");
@@ -183,56 +181,7 @@ public class NpcManager {
         mannequin.setSilent(true);
 
         // Apply skin
-        applySkin(mannequin, skin, name);
-    }
-
-    private void applySkin(Mannequin mannequin, String skinInput, String defaultName) {
-        if (skinInput == null || skinInput.equalsIgnoreCase("none") || skinInput.equalsIgnoreCase("default")) {
-            return;
-        }
-
-        String target = skinInput.trim();
-
-        // 1. If it's a direct URL
-        if (target.startsWith("http://") || target.startsWith("https://")) {
-            applySkinUrl(mannequin, target);
-            return;
-        }
-
-        // 2. If it's a 64-char texture hash (Mojang textures server)
-        if (target.matches("^[a-fA-F0-9]{64}$")) {
-            applySkinUrl(mannequin, "http://textures.minecraft.net/texture/" + target);
-            return;
-        }
-
-        // 3. Otherwise treat as a player username and resolve profile asynchronously
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                PlayerProfile profile = Bukkit.createProfile(target);
-                if (profile.complete()) {
-                    Bukkit.getScheduler().runTask(plugin, () -> {
-                        if (mannequin.isValid()) {
-                            mannequin.setProfile(ResolvableProfile.resolvableProfile(profile));
-                        }
-                    });
-                }
-            } catch (Exception e) {
-                plugin.getLogger().warning("Could not complete profile for player skin '" + target + "': " + e.getMessage());
-            }
-        });
-    }
-
-    private void applySkinUrl(Mannequin mannequin, String urlStr) {
-        try {
-            URL url = URI.create(urlStr).toURL();
-            PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), "NPC");
-            PlayerTextures textures = profile.getTextures();
-            textures.setSkin(url);
-            profile.setTextures(textures);
-            mannequin.setProfile(ResolvableProfile.resolvableProfile(profile));
-        } catch (Exception e) {
-            plugin.getLogger().warning("Invalid skin URL '" + urlStr + "': " + e.getMessage());
-        }
+        skinManager.applySkin(mannequin, skin);
     }
 
     private void respawnIfMissing(NpcData data) {
