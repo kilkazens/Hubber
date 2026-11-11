@@ -85,11 +85,12 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
   * **When Online**: Plays a chime sound, displays a screen Title/Subtitle (`SERVER ONLINE`), and broadcasts an interactive chat message with a one-click `[Click to Connect]` button.
   * **Safe Connection**: Gracefully prevents players from executing `/joinserver` while the main server is rebooting to prevent proxy disconnect errors.
 
-* 📢 **Custom Promotional Auto-Broadcasts (`broadcasts.yml`)**:
-  * Dedicated `broadcasts.yml` configuration with master toggle (disabled by default: `enabled: false`).
-  * Easily add unlimited announcement entries with interval timer, sequential or random order, and chime sound effects.
+* 📢 **Custom Promotional Auto-Broadcasts & Join Broadcasts (`broadcasts.yml`)**:
+  * Dedicated `broadcasts.yml` configuration with master toggles (disabled by default: `enabled: false`).
+  * **Join Broadcast (`join_broadcast`)**: Customizable welcome announcement sent on join (privately to the joining player or broadcast to all), with configurable delay ticks, chime sound, `{player}`/`{online}` placeholders, and interactive buttons.
+  * **Periodic Broadcasts (`broadcasts`)**: Unlimited announcement entries with interval timer, sequential or random order, and sound effects.
   * Interactive buttons: any text inside brackets `[Button]` automatically turns into a clickable button supporting `OPEN_URL`, `RUN_COMMAND`, `SUGGEST_COMMAND`, and `COPY_TO_CLIPBOARD` with custom hover tooltips!
-  * Admin command: `/hubber broadcast [id]` to test or send specific announcements on demand.
+  * Admin command: `/hubber broadcast [id]` (supports `/hubber broadcast join` to preview join message).
 
 ---
 
@@ -161,11 +162,12 @@ target/Hubber-1.1.jar
 * **Верификация Discord (`/verification`)**: Настраиваемое сообщение с кликабельной ссылкой на Discord.
 * **Принудительный Survival**: Автоматическая установка и удержание режима выживания.
 * **Чистый чат**: Отключение стандартных сообщений о входе и выходе игроков (`chat.disable_join_quit_messages`).
-* **Рекламные авто-бродкасты (`broadcasts.yml`)**:
+* **Бродкасты и приветствия (`broadcasts.yml`)**:
   * Отдельный файл конфигурации `broadcasts.yml` (по умолчанию выключен: `enabled: false`).
-  * Лёгкое добавление неограниченного числа объявлений с настраиваемым таймером интервала и звуком.
+  * **Бродкаст при заходе (`join_broadcast`)**: Настраиваемое приветствие при входе (лично игроку или в общий чат хаба), плейсхолдеры `{player}` и `{online}`, настраиваемая задержка перед отправкой, звук колокольчика и кликабельные кнопки.
+  * **Периодические авто-бродкасты (`broadcasts`)**: Неограниченное число объявлений с настраиваемым таймером интервала и звуком.
   * Интерактивные кнопки: текст в скобках `[Текст]` автоматически становится кликабельной кнопкой (ссылки на сайт/Discord, команды, копирование в буфер) с всплывающими подсказками.
-  * Ручная отправка: `/hubber broadcast [id]`.
+  * Ручная отправка: `/hubber broadcast [id]` (включая `/hubber broadcast join` для проверки приветствия).
 * **Мониторинг рестарта основного сервера**:
   * Hubber в реальном времени асинхронно опрашивает порт основного сервера через Minecraft SLP.
   * **Во время рестарта**: Показывает всем игрокам в хабе BossBar со счётчиком времени перезагрузки (`Основной сервер перезагружается... (12 сек)`). Защищает игроков от ошибок прокси при попытке зайти.

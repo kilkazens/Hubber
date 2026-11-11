@@ -89,6 +89,11 @@ public class PlayerJoinListener implements Listener {
         if (config.isBookGiveOnJoin()) {
             bookManager.giveBook(player);
         }
+
+        // 6. Send join broadcast if enabled
+        if (plugin.getBroadcastManager() != null) {
+            plugin.getBroadcastManager().handlePlayerJoin(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

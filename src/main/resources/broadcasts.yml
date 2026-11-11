@@ -4,8 +4,49 @@
 #         Initially created for Initium Magnum Terra       #
 # ======================================================== #
 
-# Master toggle for automatic promotional broadcasts
-# (Set to true to enable scheduled broadcasts in the hub)
+# ======================================================== #
+#              1. Join Broadcast (On Player Join)          #
+# ======================================================== #
+# Announcement sent when a player joins the hub server
+join_broadcast:
+  # Master toggle for join broadcast (default: false)
+  enabled: false
+
+  # Who receives the announcement:
+  # "PLAYER" = send only to the player who joined (private welcome)
+  # "ALL"    = broadcast to everyone on the hub server
+  send_to: "PLAYER"
+
+  # Delay in ticks before sending after join (20 ticks = 1 second)
+  # Recommended: 10-20 ticks so the player finishes loading into the world
+  delay_ticks: 15
+
+  # Play a sound when the message is sent
+  play_sound: true
+  sound: "entity.player.levelup"
+
+  # Message lines (supports & and &#RRGGBB / <#RRGGBB> HEX colors)
+  # Available placeholders: {player} (player's name), {online} (online players count)
+  # Use [Button Text] anywhere to make an interactive clickable button!
+  messages:
+    - "&8&m----------------------------------------"
+    - "&#FFD700&l          WELCOME TO THE SERVER!"
+    - "&fWelcome, &#00FF7F{player}&f! Glad to see you in the hub."
+    - "&7Use the book in your hotbar or click the button below"
+    - "&7to connect to the main survival server:"
+    - "&#00FF7F&l[Click here to connect to the Main Server]"
+    - "&8&m----------------------------------------"
+
+  # Optional interactive button action (for [Button] in messages)
+  # Supported actions: OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD
+  click_action: "RUN_COMMAND"
+  click_value: "/joinserver"
+  hover_text: "&#00FF7F&lClick to run /joinserver"
+
+# ======================================================== #
+#           2. Periodic Promotional Auto-Broadcasts        #
+# ======================================================== #
+# Master toggle for scheduled auto-broadcasts (default: false)
 enabled: false
 
 # Interval between broadcasts in seconds (e.g. 120 = every 2 minutes)
@@ -20,20 +61,7 @@ random: false
 play_sound: true
 sound: "entity.experience_orb.pickup"
 
-# ======================================================== #
-#                    Configured Broadcasts                 #
-# ======================================================== #
-# You can add as many broadcasts as you want!
-#
-# Supported options per broadcast:
-#   messages: List of strings (supports & and &#RRGGBB / <#RRGGBB> HEX colors)
-#             Use [Text] anywhere in a line to create an interactive button!
-#   click_action: (Optional) Action when clicking the button:
-#                 OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD
-#   click_value:  (Optional) URL, command, or text to copy
-#   hover_text:   (Optional) Tooltip displayed when hovering over the button
-# ======================================================== #
-
+# Configured periodic broadcasts
 broadcasts:
   discord:
     messages:

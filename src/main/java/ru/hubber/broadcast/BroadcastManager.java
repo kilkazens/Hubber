@@ -28,15 +28,23 @@ public class BroadcastManager {
     private final HubberPlugin plugin;
     private final File broadcastsFile;
 
+    // Periodic auto-broadcast settings
     private boolean enabled = false;
     private int intervalSeconds = 120;
     private boolean random = false;
     private boolean playSound = true;
     private String soundKey = "entity.experience_orb.pickup";
-
     private final List<BroadcastItem> broadcastList = new ArrayList<>();
     private int currentIndex = 0;
     private BukkitTask task;
+
+    // Join broadcast settings
+    private boolean joinEnabled = false;
+    private String joinSendTo = "PLAYER";
+    private int joinDelayTicks = 15;
+    private boolean joinPlaySound = true;
+    private String joinSoundKey = "entity.player.levelup";
+    private BroadcastItem joinBroadcastItem;
 
     public BroadcastManager(HubberPlugin plugin) {
         this.plugin = plugin;
@@ -62,6 +70,8 @@ public class BroadcastManager {
         }
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(broadcastsFile);
+
+        // 1. Periodic broadcasts settings
         this.enabled = config.getBoolean("enabled", false);
         this.intervalSeconds = config.getInt("interval_seconds", 120);
         this.random = config.getBoolean("random", false);
@@ -84,6 +94,29 @@ public class BroadcastManager {
                     broadcastList.add(new BroadcastItem(id, messages, clickAction, clickValue, hoverText));
                 }
             }
+        }
+
+        // 2. Join broadcast settings
+        ConfigurationSection joinSec = config.getConfigurationSection("join_broadcast");
+        if (joinSec != null) {
+            this.joinEnabled = joinSec.getBoolean("enabled", false);
+            this.joinSendTo = joinSec.getString("send_to", "PLAYER");
+            this.joinDelayTicks = joinSec.getInt("delay_ticks", 15);
+            this.joinPlaySound = joinSec.getBoolean("play_sound", true);
+            this.joinSoundKey = joinSec.getString("sound", "entity.player.levelup");
+
+            List<String> messages = joinSec.getStringList("messages");
+            if (messages.isEmpty() && joinSec.isString("messages")) {
+                messages = List.of(joinSec.getString("messages"));
+            }
+            String clickAction = joinSec.getString("click_action", "");
+            String clickValue = joinSec.getString("click_value", "");
+            String hoverText = joinSec.getString("hover_text", "");
+
+            this.joinBroadcastItem = new BroadcastItem("join", messages, clickAction, clickValue, hoverText);
+        } else {
+            this.joinEnabled = false;
+            this.joinBroadcastItem = null;
         }
 
         start();
@@ -111,6 +144,62 @@ public class BroadcastManager {
         loadBroadcasts();
     }
 
+    public void handlePlayerJoin(Player player) {
+        if (!joinEnabled || joinBroadcastItem == null || joinBroadcastItem.messages().isEmpty()) {
+            return;
+        }
+
+        long delay = Math.max(1L, joinDelayTicks);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (!player.isOnline()) {
+                return;
+            }
+            sendJoinBroadcast(player);
+        }, delay);
+    }
+
+    public void sendJoinBroadcast(Player player) {
+        if (joinBroadcastItem == null || joinBroadcastItem.messages().isEmpty()) {
+            return;
+        }
+
+        boolean sendToAll = "ALL".equalsIgnoreCase(joinSendTo);
+        ClickEvent clickEvent = createClickEvent(joinBroadcastItem.clickAction(), joinBroadcastItem.clickValue());
+        HoverEvent<?> hoverEvent = (joinBroadcastItem.hoverText() != null && !joinBroadcastItem.hoverText().isEmpty())
+                ? HoverEvent.showText(ColorUtils.toComponent(joinBroadcastItem.hoverText()))
+                : null;
+
+        if (sendToAll) {
+            // Broadcast to all online players
+            for (String rawLine : joinBroadcastItem.messages()) {
+                Component lineComp = formatLine(rawLine, joinBroadcastItem.clickValue(), clickEvent, hoverEvent, player);
+                Bukkit.broadcast(lineComp);
+            }
+            if (joinPlaySound && joinSoundKey != null && !joinSoundKey.isEmpty()) {
+                try {
+                    Sound sound = Sound.sound(Key.key(joinSoundKey), Sound.Source.MASTER, 1.0f, 1.0f);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.playSound(sound);
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        } else if (player != null && player.isOnline()) {
+            // Send privately to the joining player
+            for (String rawLine : joinBroadcastItem.messages()) {
+                Component lineComp = formatLine(rawLine, joinBroadcastItem.clickValue(), clickEvent, hoverEvent, player);
+                player.sendMessage(lineComp);
+            }
+            if (joinPlaySound && joinSoundKey != null && !joinSoundKey.isEmpty()) {
+                try {
+                    Sound sound = Sound.sound(Key.key(joinSoundKey), Sound.Source.MASTER, 1.0f, 1.0f);
+                    player.playSound(sound);
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
     public void broadcastNext() {
         if (broadcastList.isEmpty()) {
             return;
@@ -136,6 +225,15 @@ public class BroadcastManager {
     }
 
     public boolean broadcastById(String id) {
+        if ("join".equalsIgnoreCase(id.trim()) || "welcome".equalsIgnoreCase(id.trim())) {
+            if (joinBroadcastItem != null) {
+                Player first = Bukkit.getOnlinePlayers().stream().findFirst().orElse(null);
+                sendJoinBroadcast(first);
+                return true;
+            }
+            return false;
+        }
+
         for (BroadcastItem item : broadcastList) {
             if (item.id().equalsIgnoreCase(id.trim())) {
                 sendBroadcast(item);
@@ -150,19 +248,16 @@ public class BroadcastManager {
             return;
         }
 
-        // Build ClickEvent & HoverEvent if specified
         ClickEvent clickEvent = createClickEvent(item.clickAction(), item.clickValue());
         HoverEvent<?> hoverEvent = (item.hoverText() != null && !item.hoverText().isEmpty())
                 ? HoverEvent.showText(ColorUtils.toComponent(item.hoverText()))
                 : null;
 
-        // Broadcast lines to all online players
         for (String rawLine : item.messages()) {
-            Component lineComponent = formatLine(rawLine, item.clickValue(), clickEvent, hoverEvent);
+            Component lineComponent = formatLine(rawLine, item.clickValue(), clickEvent, hoverEvent, null);
             Bukkit.broadcast(lineComponent);
         }
 
-        // Play chime sound if enabled
         if (playSound && soundKey != null && !soundKey.isEmpty()) {
             try {
                 Sound sound = Sound.sound(Key.key(soundKey), Sound.Source.MASTER, 1.0f, 1.0f);
@@ -174,13 +269,19 @@ public class BroadcastManager {
         }
     }
 
-    private Component formatLine(String line, String clickValue, ClickEvent clickEvent, HoverEvent<?> hoverEvent) {
+    private Component formatLine(String line, String clickValue, ClickEvent clickEvent, HoverEvent<?> hoverEvent, Player player) {
+        // Placeholders
+        String processed = line.replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()));
+        if (player != null) {
+            processed = processed.replace("{player}", player.getName());
+        }
+
         if (clickEvent == null) {
-            return ColorUtils.toComponent(line);
+            return ColorUtils.toComponent(processed);
         }
 
         // 1. Bracket syntax e.g. "[Click here]" -> interactive button
-        Matcher matcher = BRACKET_PATTERN.matcher(line);
+        Matcher matcher = BRACKET_PATTERN.matcher(processed);
         if (matcher.find()) {
             TextComponent.Builder lineBuilder = Component.text();
             int lastEnd = 0;
@@ -191,7 +292,7 @@ public class BroadcastManager {
                 int end = matcher.end();
 
                 if (start > lastEnd) {
-                    lineBuilder.append(ColorUtils.toComponent(line.substring(lastEnd, start)));
+                    lineBuilder.append(ColorUtils.toComponent(processed.substring(lastEnd, start)));
                 }
 
                 String bracketContent = matcher.group(1);
@@ -204,16 +305,16 @@ public class BroadcastManager {
                 lastEnd = end;
             }
 
-            if (lastEnd < line.length()) {
-                lineBuilder.append(ColorUtils.toComponent(line.substring(lastEnd)));
+            if (lastEnd < processed.length()) {
+                lineBuilder.append(ColorUtils.toComponent(processed.substring(lastEnd)));
             }
             return lineBuilder.build();
         }
 
         // 2. {link} or {url} placeholder syntax
-        if (line.contains("{link}") || line.contains("{url}")) {
-            String token = line.contains("{link}") ? "{link}" : "{url}";
-            String[] parts = line.split(Pattern.quote(token), -1);
+        if (processed.contains("{link}") || processed.contains("{url}")) {
+            String token = processed.contains("{link}") ? "{link}" : "{url}";
+            String[] parts = processed.split(Pattern.quote(token), -1);
             TextComponent.Builder lineBuilder = Component.text();
 
             for (int i = 0; i < parts.length; i++) {
@@ -231,7 +332,7 @@ public class BroadcastManager {
             return lineBuilder.build();
         }
 
-        return ColorUtils.toComponent(line);
+        return ColorUtils.toComponent(processed);
     }
 
     private ClickEvent createClickEvent(String action, String value) {
@@ -253,6 +354,14 @@ public class BroadcastManager {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean isJoinEnabled() {
+        return joinEnabled;
+    }
+
+    public BroadcastItem getJoinBroadcastItem() {
+        return joinBroadcastItem;
     }
 
     public List<BroadcastItem> getBroadcastList() {
