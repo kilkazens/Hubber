@@ -101,8 +101,8 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
 
 ## 📥 Installation
 
-1. Download or compile the `Hubber-1.0.0.jar` file.
-2. Place `Hubber-1.0.0.jar` into your server's `plugins/` directory.
+1. Download or compile the `Hubber-1.1.jar` file.
+2. Place `Hubber-1.1.jar` into your server's `plugins/` directory.
 3. Start or restart your server (requires **Paper 26.3** and **Java 25+**).
 4. Run `/hubspawn` in-game as an operator to configure your spawn location.
 5. (Optional) Customize `config.yml`, `messages_en.yml`, or `messages_ru.yml` to your preference and execute `/hubber reload`.
@@ -121,7 +121,7 @@ mvn clean package
 
 The compiled binary will be located at:
 ```
-target/Hubber-1.0.0.jar
+target/Hubber-1.1.jar
 ```
 
 ---
