@@ -52,6 +52,7 @@ public class HubberCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(config.getMessage("commands.help_reload"));
             sender.sendMessage(config.getMessage("commands.help_setspawn"));
             sender.sendMessage(config.getMessage("commands.help_book"));
+            sender.sendMessage(config.getMessage("commands.help_broadcast"));
             sender.sendMessage(config.getMessage("commands.help_joinserver"));
             sender.sendMessage(config.getMessage("commands.help_hubspawn"));
             sender.sendMessage(config.getMessage("commands.help_back"));
@@ -71,10 +72,33 @@ public class HubberCommand implements CommandExecutor, TabCompleter {
                 if (plugin.getServerMonitor() != null) {
                     plugin.getServerMonitor().reload();
                 }
+                if (plugin.getBroadcastManager() != null) {
+                    plugin.getBroadcastManager().reload();
+                }
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
                     collisionManager.applyCollisionRule(player);
                 }
                 sender.sendMessage(config.getFormattedMessage("reload_success"));
+                return true;
+            }
+            case "broadcast", "bc" -> {
+                if (plugin.getBroadcastManager() == null || plugin.getBroadcastManager().getBroadcastList().isEmpty()) {
+                    sender.sendMessage(config.getPrefix() + "§cNo broadcasts configured in broadcasts.yml!");
+                    return true;
+                }
+                if (args.length > 1) {
+                    String id = args[1];
+                    boolean success = plugin.getBroadcastManager().broadcastById(id);
+                    if (success) {
+                        sender.sendMessage(config.getPrefix() + "§aBroadcast '§e" + id + "§a' sent successfully!");
+                    } else {
+                        List<String> ids = plugin.getBroadcastManager().getBroadcastList().stream().map(ru.hubber.broadcast.BroadcastItem::id).toList();
+                        sender.sendMessage(config.getPrefix() + "§cBroadcast '§e" + id + "§c' not found! Available: §e" + String.join(", ", ids));
+                    }
+                } else {
+                    plugin.getBroadcastManager().broadcastNext();
+                    sender.sendMessage(config.getPrefix() + "§aNext broadcast sent to all players!");
+                }
                 return true;
             }
             case "setspawn" -> {
@@ -111,12 +135,25 @@ public class HubberCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
             String prefix = args[0].toLowerCase();
-            for (String option : List.of("reload", "setspawn", "book")) {
+            for (String option : List.of("reload", "setspawn", "book", "broadcast")) {
                 if (option.startsWith(prefix)) {
                     completions.add(option);
                 }
             }
             return completions;
+        }
+
+        if (args.length == 2 && (args[0].equalsIgnoreCase("broadcast") || args[0].equalsIgnoreCase("bc"))) {
+            if (plugin.getBroadcastManager() != null) {
+                String prefix = args[1].toLowerCase();
+                List<String> ids = new ArrayList<>();
+                for (ru.hubber.broadcast.BroadcastItem item : plugin.getBroadcastManager().getBroadcastList()) {
+                    if (item.id().toLowerCase().startsWith(prefix)) {
+                        ids.add(item.id());
+                    }
+                }
+                return ids;
+            }
         }
 
         return Collections.emptyList();

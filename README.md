@@ -85,6 +85,12 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
   * **When Online**: Plays a chime sound, displays a screen Title/Subtitle (`SERVER ONLINE`), and broadcasts an interactive chat message with a one-click `[Click to Connect]` button.
   * **Safe Connection**: Gracefully prevents players from executing `/joinserver` while the main server is rebooting to prevent proxy disconnect errors.
 
+* 📢 **Custom Promotional Auto-Broadcasts (`broadcasts.yml`)**:
+  * Dedicated `broadcasts.yml` configuration with master toggle (disabled by default: `enabled: false`).
+  * Easily add unlimited announcement entries with interval timer, sequential or random order, and chime sound effects.
+  * Interactive buttons: any text inside brackets `[Button]` automatically turns into a clickable button supporting `OPEN_URL`, `RUN_COMMAND`, `SUGGEST_COMMAND`, and `COPY_TO_CLIPBOARD` with custom hover tooltips!
+  * Admin command: `/hubber broadcast [id]` to test or send specific announcements on demand.
+
 ---
 
 ## 📜 Commands & Permissions
@@ -97,9 +103,10 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
 | `/back` | Teleport to the hub spawn | `/spawn`, `/lobby` | `hubber.back` | Everyone (`true`) |
 | `/verification` | Send Discord verification link | `/discord`, `/ds`, `/verify` | `hubber.verification` | Everyone (`true`) |
 | `/settrigger` | Create a spawn teleport trigger | `/trigger`, `/hubtrigger` | `hubber.settrigger` | OP |
-| `/hubber reload` | Reload configuration and languages | `/hb` | `hubber.admin` | OP |
+| `/hubber reload` | Reload configuration, broadcasts, languages | `/hb` | `hubber.admin` | OP |
 | `/hubber setspawn`| Set hub spawn location | `/hb` | `hubber.admin` | OP |
 | `/hubber book` | Give yourself the connection book | `/hb` | `hubber.admin` | OP |
+| `/hubber broadcast [id]` | Manually send next or specific broadcast | `/hb bc` | `hubber.admin` | OP |
 
 ### Additional Bypass Permissions:
 * `hubber.bypass.break` — Allow breaking blocks in the hub.
@@ -154,6 +161,11 @@ target/Hubber-1.1.jar
 * **Верификация Discord (`/verification`)**: Настраиваемое сообщение с кликабельной ссылкой на Discord.
 * **Принудительный Survival**: Автоматическая установка и удержание режима выживания.
 * **Чистый чат**: Отключение стандартных сообщений о входе и выходе игроков (`chat.disable_join_quit_messages`).
+* **Рекламные авто-бродкасты (`broadcasts.yml`)**:
+  * Отдельный файл конфигурации `broadcasts.yml` (по умолчанию выключен: `enabled: false`).
+  * Лёгкое добавление неограниченного числа объявлений с настраиваемым таймером интервала и звуком.
+  * Интерактивные кнопки: текст в скобках `[Текст]` автоматически становится кликабельной кнопкой (ссылки на сайт/Discord, команды, копирование в буфер) с всплывающими подсказками.
+  * Ручная отправка: `/hubber broadcast [id]`.
 * **Мониторинг рестарта основного сервера**:
   * Hubber в реальном времени асинхронно опрашивает порт основного сервера через Minecraft SLP.
   * **Во время рестарта**: Показывает всем игрокам в хабе BossBar со счётчиком времени перезагрузки (`Основной сервер перезагружается... (12 сек)`). Защищает игроков от ошибок прокси при попытке зайти.

@@ -66,6 +66,7 @@ commands:
   help_reload: "§8» §e/hubber reload §7— перезагрузить конфигурацию и языки"
   help_setspawn: "§8» §e/hubber setspawn §7— установить спавн хаба"
   help_book: "§8» §e/hubber book §7— получить книгу подключения"
+  help_broadcast: "§8» §e/hubber broadcast [id] §7— отправить рекламный бродкаст"
   help_joinserver: "§8» §e/joinserver §7— подключиться к основному серверу"
   help_hubspawn: "§8» §e/hubspawn §7— установить точку спавна"
   help_back: "§8» §e/back §7— телепортироваться на спавн"

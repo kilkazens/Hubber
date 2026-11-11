@@ -66,6 +66,7 @@ commands:
   help_reload: "§8» §e/hubber reload §7— reload configuration and language files"
   help_setspawn: "§8» §e/hubber setspawn §7— set hub spawn location"
   help_book: "§8» §e/hubber book §7— give yourself the connection book"
+  help_broadcast: "§8» §e/hubber broadcast [id] §7— send broadcast announcement"
   help_joinserver: "§8» §e/joinserver §7— connect to the target game server"
   help_hubspawn: "§8» §e/hubspawn §7— set hub spawn location"
   help_back: "§8» §e/back §7— teleport to hub spawn"

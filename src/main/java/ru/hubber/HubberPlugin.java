@@ -4,6 +4,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.hubber.book.BookManager;
+import ru.hubber.broadcast.BroadcastManager;
 import ru.hubber.collision.CollisionManager;
 import ru.hubber.commands.BackCommand;
 import ru.hubber.commands.HubCommand;
@@ -32,6 +33,7 @@ public class HubberPlugin extends JavaPlugin {
     private TriggerManager triggerManager;
     private NpcManager npcManager;
     private ServerMonitor serverMonitor;
+    private BroadcastManager broadcastManager;
 
     @Override
     public void onEnable() {
@@ -45,6 +47,7 @@ public class HubberPlugin extends JavaPlugin {
         this.triggerManager = new TriggerManager(this);
         this.npcManager = new NpcManager(this);
         this.serverMonitor = new ServerMonitor(this, configManager);
+        this.broadcastManager = new BroadcastManager(this);
 
         // 3. Register commands
         registerCommands();
@@ -58,7 +61,7 @@ public class HubberPlugin extends JavaPlugin {
         getLogger().info("=========================================");
         getLogger().info(" Hubber v" + getPluginMeta().getVersion() + " successfully enabled on Paper 26.3!");
         getLogger().info(" Developed by kilkazens for Initium Magnum Terra.");
-        getLogger().info(" Protection, spawn, triggers, NPCs, book, server monitor, and gamemode active.");
+        getLogger().info(" Protection, spawn, triggers, NPCs, book, server monitor, broadcasts, and gamemode active.");
         getLogger().info("=========================================");
     }
 
@@ -66,6 +69,10 @@ public class HubberPlugin extends JavaPlugin {
     public void onDisable() {
         // Unregister BungeeCord messaging channel
         getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+
+        if (broadcastManager != null) {
+            broadcastManager.stop();
+        }
 
         if (serverMonitor != null) {
             serverMonitor.stop();
@@ -155,5 +162,9 @@ public class HubberPlugin extends JavaPlugin {
 
     public ServerMonitor getServerMonitor() {
         return serverMonitor;
+    }
+
+    public BroadcastManager getBroadcastManager() {
+        return broadcastManager;
     }
 }

@@ -1,0 +1,72 @@
+# ======================================================== #
+#                  Hubber Broadcasts System                #
+#                   Developed by kilkazens                 #
+#         Initially created for Initium Magnum Terra       #
+# ======================================================== #
+
+# Master toggle for automatic promotional broadcasts
+# (Set to true to enable scheduled broadcasts in the hub)
+enabled: false
+
+# Interval between broadcasts in seconds (e.g. 120 = every 2 minutes)
+interval_seconds: 120
+
+# Order of broadcasts:
+# false = sequential (in the order defined below)
+# true  = random selection
+random: false
+
+# Play a chime sound when a broadcast is sent
+play_sound: true
+sound: "entity.experience_orb.pickup"
+
+# ======================================================== #
+#                    Configured Broadcasts                 #
+# ======================================================== #
+# You can add as many broadcasts as you want!
+#
+# Supported options per broadcast:
+#   messages: List of strings (supports & and &#RRGGBB / <#RRGGBB> HEX colors)
+#             Use [Text] anywhere in a line to create an interactive button!
+#   click_action: (Optional) Action when clicking the button:
+#                 OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD
+#   click_value:  (Optional) URL, command, or text to copy
+#   hover_text:   (Optional) Tooltip displayed when hovering over the button
+# ======================================================== #
+
+broadcasts:
+  discord:
+    messages:
+      - "&8&m----------------------------------------"
+      - "&#5865F2&l          DISCORD COMMUNITY"
+      - "&fJoin our official Discord community for news,"
+      - "&fevents, support, and discussions!"
+      - "&#5865F2&l[Click here to join our Discord server]"
+      - "&8&m----------------------------------------"
+    click_action: "OPEN_URL"
+    click_value: "https://discord.gg/yourserver"
+    hover_text: "&#00FF7F&lClick to open Discord invite in your browser"
+
+  store:
+    messages:
+      - "&8&m----------------------------------------"
+      - "&#FFD700&l           SERVER STORE & RANKS"
+      - "&fSupport our project and unlock exclusive ranks,"
+      - "&fcosmetics, and unique gameplay perks!"
+      - "&#FFD700&l[Click here to visit our Store]"
+      - "&8&m----------------------------------------"
+    click_action: "OPEN_URL"
+    click_value: "https://store.myserver.com"
+    hover_text: "&#FFD700&lClick to browse privileges in web store"
+
+  connect:
+    messages:
+      - "&8&m----------------------------------------"
+      - "&#00FF7F&l           PLAY ON MAIN SERVER"
+      - "&fReady to dive into our survival world?"
+      - "&fUse the book in your hotbar or click below:"
+      - "&#00FF7F&l[Click here to connect to the Main Server]"
+      - "&8&m----------------------------------------"
+    click_action: "RUN_COMMAND"
+    click_value: "/joinserver"
+    hover_text: "&#00FF7F&lClick to instantly connect to the main server"
