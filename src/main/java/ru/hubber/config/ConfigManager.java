@@ -329,4 +329,56 @@ public class ConfigManager {
     public String getTriggerTeleportMessage() {
         return getMessage("triggers.teleported");
     }
+
+    // --- Chat Settings ---
+
+    public boolean isDisableJoinQuitMessages() {
+        return config.getBoolean("chat.disable_join_quit_messages", true);
+    }
+
+    // --- Server Monitor Settings ---
+
+    public boolean isServerMonitorEnabled() {
+        return config.getBoolean("server_monitor.enabled", true);
+    }
+
+    public String getServerMonitorHost() {
+        return config.getString("server_monitor.host", "127.0.0.1");
+    }
+
+    public int getServerMonitorPort() {
+        return config.getInt("server_monitor.port", 25566);
+    }
+
+    public int getServerMonitorCheckInterval() {
+        return config.getInt("server_monitor.check_interval_seconds", 3);
+    }
+
+    public int getServerMonitorTimeoutMs() {
+        return config.getInt("server_monitor.timeout_ms", 1500);
+    }
+
+    public boolean isServerMonitorShowBossBar() {
+        return config.getBoolean("server_monitor.show_bossbar", true);
+    }
+
+    public boolean isServerMonitorSendTitle() {
+        return config.getBoolean("server_monitor.send_title_on_online", true);
+    }
+
+    public boolean isServerMonitorBroadcastChat() {
+        return config.getBoolean("server_monitor.broadcast_chat", true);
+    }
+
+    public boolean isServerMonitorPlaySound() {
+        return config.getBoolean("server_monitor.play_sound", true);
+    }
+
+    public String getServerMonitorSound() {
+        return config.getString("server_monitor.sound", "entity.player.levelup");
+    }
+
+    public boolean isServerMonitorBlockJoinWhileOffline() {
+        return config.getBoolean("server_monitor.block_join_while_offline", true);
+    }
 }

@@ -72,3 +72,14 @@ commands:
   help_verification: "§8» §e/verification §7— отправить ссылку на дискорд"
   help_settrigger: "§8» §e/settrigger §7— создать триггер спавна"
   unknown_subcommand: "§cНеизвестная подкоманда! Используйте /"
+
+server_monitor:
+  restarting_chat: "&cОсновной сервер ушел на перезагрузку! Пожалуйста, ожидайте..."
+  restarting_bossbar: "&e&lОсновной сервер перезагружается... &7(Ожидание: {seconds} сек)"
+  restarting_warning: "&cОсновной сервер сейчас перезагружается. Пожалуйста, дождитесь завершения запуска!"
+  online_chat: "&#00FF7F&lОсновной сервер запущен и доступен! &eНажмите ПКМ по книге или"
+  online_chat_click: "&#00FF7F&l[Подключиться]"
+  online_chat_hover: "&aНажмите, чтобы подключиться к серверу (/joinserver)"
+  online_title: "&#00FF7F&lСЕРВЕР ОНЛАЙН"
+  online_subtitle: "&fОсновной сервер готов! Нажмите ПКМ по книге или введите &e/joinserver"
+  online_bossbar: "&#00FF7F&lОсновной сервер онлайн! &7(Перезагрузка заняла {seconds} сек)"

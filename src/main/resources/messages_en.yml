@@ -72,3 +72,14 @@ commands:
   help_verification: "§8» §e/verification §7— send discord verification link"
   help_settrigger: "§8» §e/settrigger §7— create spawn teleport trigger"
   unknown_subcommand: "§cUnknown subcommand! Use /"
+
+server_monitor:
+  restarting_chat: "&cMain server is restarting! Please wait..."
+  restarting_bossbar: "&e&lMain server is restarting... &7(Waiting: {seconds}s)"
+  restarting_warning: "&cThe main server is currently restarting. Please wait until it is back online!"
+  online_chat: "&#00FF7F&lThe main server is now online! &eRight-click your book or"
+  online_chat_click: "&#00FF7F&l[Click to Connect]"
+  online_chat_hover: "&aClick to join the main server (/joinserver)"
+  online_title: "&#00FF7F&lSERVER ONLINE"
+  online_subtitle: "&fMain server is ready! Right-click your book or use &e/joinserver"
+  online_bossbar: "&#00FF7F&lMain server is online! &7(Restart took {seconds}s)"

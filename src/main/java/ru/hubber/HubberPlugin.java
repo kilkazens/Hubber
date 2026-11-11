@@ -19,6 +19,7 @@ import ru.hubber.listeners.PlayerJoinListener;
 import ru.hubber.listeners.ProtectionListener;
 import ru.hubber.listeners.TriggerListener;
 import ru.hubber.npc.NpcManager;
+import ru.hubber.server.ServerMonitor;
 import ru.hubber.spawn.SpawnManager;
 import ru.hubber.trigger.TriggerManager;
 
@@ -30,6 +31,7 @@ public class HubberPlugin extends JavaPlugin {
     private BookManager bookManager;
     private TriggerManager triggerManager;
     private NpcManager npcManager;
+    private ServerMonitor serverMonitor;
 
     @Override
     public void onEnable() {
@@ -42,6 +44,7 @@ public class HubberPlugin extends JavaPlugin {
         this.bookManager = new BookManager(this, configManager);
         this.triggerManager = new TriggerManager(this);
         this.npcManager = new NpcManager(this);
+        this.serverMonitor = new ServerMonitor(this, configManager);
 
         // 3. Register commands
         registerCommands();
@@ -55,7 +58,7 @@ public class HubberPlugin extends JavaPlugin {
         getLogger().info("=========================================");
         getLogger().info(" Hubber v" + getPluginMeta().getVersion() + " successfully enabled on Paper 26.3!");
         getLogger().info(" Developed by kilkazens for Initium Magnum Terra.");
-        getLogger().info(" Protection, spawn, triggers, NPCs, book, and gamemode active.");
+        getLogger().info(" Protection, spawn, triggers, NPCs, book, server monitor, and gamemode active.");
         getLogger().info("=========================================");
     }
 
@@ -63,6 +66,10 @@ public class HubberPlugin extends JavaPlugin {
     public void onDisable() {
         // Unregister BungeeCord messaging channel
         getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+
+        if (serverMonitor != null) {
+            serverMonitor.stop();
+        }
 
         if (collisionManager != null) {
             collisionManager.disable();
@@ -144,5 +151,9 @@ public class HubberPlugin extends JavaPlugin {
 
     public NpcManager getNpcManager() {
         return npcManager;
+    }
+
+    public ServerMonitor getServerMonitor() {
+        return serverMonitor;
     }
 }

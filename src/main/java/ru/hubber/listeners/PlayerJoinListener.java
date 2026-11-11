@@ -38,6 +38,11 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        // 0. Hide vanilla join message if configured
+        if (config.isDisableJoinQuitMessages()) {
+            event.joinMessage(null);
+        }
+
         Player player = event.getPlayer();
 
         // 1. Force Survival Mode
@@ -46,7 +51,12 @@ public class PlayerJoinListener implements Listener {
         // 2. Disable pushing / setup collision
         collisionManager.applyCollisionRule(player);
 
-        // 3. Always spawn at /hubspawn regardless of where player logged off
+        // 3. Attach ServerMonitor BossBar if server is restarting
+        if (plugin.getServerMonitor() != null) {
+            plugin.getServerMonitor().addPlayer(player);
+        }
+
+        // 4. Always spawn at /hubspawn regardless of where player logged off
         if (config.isAlwaysSpawnOnJoin() && spawnManager.isSpawnSet()) {
             Location spawn = spawnManager.getSpawnLocation();
             if (spawn != null) {
@@ -116,9 +126,17 @@ public class PlayerJoinListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        // Hide vanilla quit message if configured
+        if (config.isDisableJoinQuitMessages()) {
+            event.quitMessage(null);
+        }
+
         Player player = event.getPlayer();
+        if (plugin.getServerMonitor() != null) {
+            plugin.getServerMonitor().removePlayer(player);
+        }
         collisionManager.removeCollisionRule(player);
         bookManager.removeCooldown(player.getUniqueId());
     }

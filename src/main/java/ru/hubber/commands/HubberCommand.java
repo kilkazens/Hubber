@@ -68,6 +68,9 @@ public class HubberCommand implements CommandExecutor, TabCompleter {
                 spawnManager.loadSpawn();
                 triggerManager.loadTriggers();
                 npcManager.loadNpcs();
+                if (plugin.getServerMonitor() != null) {
+                    plugin.getServerMonitor().reload();
+                }
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
                     collisionManager.applyCollisionRule(player);
                 }

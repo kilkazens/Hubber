@@ -105,3 +105,32 @@ triggers:
 verification:
   # Your Discord server invite URL
   link: "https://discord.gg/yourserver"
+
+# Chat settings
+chat:
+  # Disable vanilla join and quit messages in chat
+  disable_join_quit_messages: true
+
+# Main server status monitor (detects restarts & informs hub players)
+server_monitor:
+  # Enable status monitoring for the main server
+  enabled: true
+  # Target server host (IP or domain of your main server)
+  host: "127.0.0.1"
+  # Target server port (Minecraft port of your main server)
+  port: 25566
+  # Check interval in seconds
+  check_interval_seconds: 3
+  # Connection timeout in milliseconds
+  timeout_ms: 1500
+  # Show BossBar when server is restarting / offline
+  show_bossbar: true
+  # Send Title notification on screen when server comes back online
+  send_title_on_online: true
+  # Broadcast chat announcement when server restarts or comes back online
+  broadcast_chat: true
+  # Play chime sound when server comes online
+  play_sound: true
+  sound: "entity.player.levelup"
+  # Prevent players from connecting while main server is rebooting
+  block_join_while_offline: true

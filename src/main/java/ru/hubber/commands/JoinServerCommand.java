@@ -37,6 +37,16 @@ public class JoinServerCommand implements CommandExecutor {
             targetServer = args[0];
         }
 
+        // Check if main server is currently offline or restarting
+        if (config.isServerMonitorBlockJoinWhileOffline()
+                && plugin.getServerMonitor() != null
+                && plugin.getServerMonitor().isEnabled()
+                && !plugin.getServerMonitor().isOnline()
+                && !player.hasPermission("hubber.admin")) {
+            player.sendMessage(config.getFormattedMessage("server_monitor.restarting_warning"));
+            return true;
+        }
+
         // Inform the player
         String connectMsg = config.getFormattedMessage("connecting_to_server").replace("{server}", targetServer);
         player.sendMessage(connectMsg);

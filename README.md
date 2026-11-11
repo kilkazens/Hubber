@@ -76,6 +76,15 @@ Language files (`messages_en.yml` and `messages_ru.yml`) are generated automatic
   * Enforces Survival mode (`SURVIVAL`) for all regular players upon join.
   * Blocks unauthorized gamemode changes with configurable OP bypass.
 
+* 🔇 **Clean Chat**:
+  * Automatically suppresses vanilla join and quit messages (`chat.disable_join_quit_messages`) to keep hub chat clean and distraction-free.
+
+* 📡 **Main Server Restart Monitor & Online Notifier**:
+  * Asynchronously monitors the target server via standard Minecraft Server List Ping (SLP).
+  * **During Restart / Offline**: Displays a dynamic BossBar to all players in the hub with real-time restart elapsed seconds (`Main server is restarting... (12s)`).
+  * **When Online**: Plays a chime sound, displays a screen Title/Subtitle (`SERVER ONLINE`), and broadcasts an interactive chat message with a one-click `[Click to Connect]` button.
+  * **Safe Connection**: Gracefully prevents players from executing `/joinserver` while the main server is rebooting to prevent proxy disconnect errors.
+
 ---
 
 ## 📜 Commands & Permissions
@@ -144,6 +153,11 @@ target/Hubber-1.1.jar
 * **Триггеры спавна (`/settrigger`)**: Создание точек или 3D-боксов, при входе в которые игрок телепортируется на спавн.
 * **Верификация Discord (`/verification`)**: Настраиваемое сообщение с кликабельной ссылкой на Discord.
 * **Принудительный Survival**: Автоматическая установка и удержание режима выживания.
+* **Чистый чат**: Отключение стандартных сообщений о входе и выходе игроков (`chat.disable_join_quit_messages`).
+* **Мониторинг рестарта основного сервера**:
+  * Hubber в реальном времени асинхронно опрашивает порт основного сервера через Minecraft SLP.
+  * **Во время рестарта**: Показывает всем игрокам в хабе BossBar со счётчиком времени перезагрузки (`Основной сервер перезагружается... (12 сек)`). Защищает игроков от ошибок прокси при попытке зайти.
+  * **Когда сервер запустился**: Воспроизводит приятный звук, показывает Title на весь экран (`СЕРВЕР ОНЛАЙН`) и отправляет кликабельное сообщение в чат с кнопкой `[Подключиться]`.
 
 Для переключения языка на русский измените в `plugins/Hubber/config.yml`:
 ```yaml
